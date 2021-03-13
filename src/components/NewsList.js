@@ -1,15 +1,18 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import NewsItem from './NewsItem';
 import dotenv from 'dotenv';
+import usePromise from '../lib/usePromise';
 
 dotenv.config();
 
 const NewsListBlock = styled.div`
+    column-width: 300px;
+    column-gap: 5px;
     box-sizing:border-box;
     padding-bottom: 3rem;
-    width: 768px;
+    max-width: 1300px;
     margin: 0 auto;
     margin-top: 2rem;
     @media screen and (max-width: 768px){
@@ -19,30 +22,25 @@ const NewsListBlock = styled.div`
     }
 `;
 
-const NewsList = () => {
-    const [articles, setArticles] = useState(null);
-    const [loading, setLoading] = useState(false);
+const NewsList = ({ category }) => {
+    const [loading, response, error] = usePromise(()=>{
+        const query = category === 'all' ? '' : `&category=${category}`;
+        return axios.get(`http://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=${process.env.REACT_APP_API_KEY}`);
+    }, [category]);
 
-    useEffect(()=>{
-        const fetchData = async() =>{
-            setLoading(true);
-            try{
-                const response = await axios.get(`http://newsapi.org/v2/top-headlines?country=kr&category=technology&apiKey=${process.env.REACT_APP_API_KEY}`);
-                setArticles(response.data.articles);
-            }catch(e){
-                console.log(e);
-            }
-        };
-        fetchData();
-    }, []);
-
-    if(!loading){
+    if(loading){
         return <NewsListBlock>Loading...</NewsListBlock>;
     }
 
-    if(!articles){
+    if(!response){
         return null;
     }
+
+    if(error){
+        return <NewsListBlock>error🚨</NewsListBlock>;
+    }
+
+    const { articles } = response.data;
 
     return (
         <NewsListBlock>
