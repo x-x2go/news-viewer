@@ -1,6 +1,6 @@
 import React from 'react';
 import NewsPage from './pages/NewsPage';
-import { Route, Router } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import SearchPage from './pages/SearchPage';
 
 const App = () =>{

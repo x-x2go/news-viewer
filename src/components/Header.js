@@ -47,7 +47,7 @@ const Header = () => {
                 <Search type="text" onChange={(e)=>{setKeyword(e.target.value)}}/>
                 <Link to={keyword === ""? `/` : `/search/${keyword}`}><SearchBtn><i className="fas fa-search"></i></SearchBtn></Link>
             </SearchBox>
-            <Logo><img src='./goNEWS_logo.png' alt='logo' width='160px'/></Logo>
+            <Link to="/"><Logo><img src='/goNEWS_logo.png' alt='logo' width='160px'/></Logo></Link>
             <Categories />
         </MainHeader>
     )

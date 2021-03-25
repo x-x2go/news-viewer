@@ -8,6 +8,18 @@ import usePromise from '../lib/usePromise';
 
 dotenv.config();
 
+const SearchResult = styled.div`
+        h2{
+            display: inline;
+            font-size: 16px;
+            font-weight: 600;
+            color: #86746d;
+        }
+        
+        width: fit-content;
+        height: 60px;
+        margin: 30px auto;
+`
 const NewsListBlock = styled.div`
     column-width: 300px;
     column-gap: 5px;
@@ -16,6 +28,7 @@ const NewsListBlock = styled.div`
     max-width: 1300px;
     margin: 0 auto;
     margin-top: 2rem;
+    text-align: center;
     @media screen and (max-width: 768px){
         width: 100%;
         padding-left: 1rem;
@@ -47,9 +60,12 @@ const Search = ({keyword}) => {
     const { articles } = response.data;
 
     return (
+        <>
+        <SearchResult><h2>'{keyword}'</h2> 검색 결과</SearchResult>
         <NewsListBlock>
             {articles.map(article => <NewsItem key={article.url} article={article}/>)}
         </NewsListBlock>
+        </>
     );
 
 }
